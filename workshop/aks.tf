@@ -2,16 +2,6 @@ provider "azurerm" {
   features {}
 }
 
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "my_resource"
-    storage_account_name = "newworkshop66"
-    container_name       = "workshop"
-    key                  = "terraform.tfstate"
-  }
-}
-
-
 resource "azurerm_resource_group" "default" {
   name     = "my-resource-group"
   location = "East US"  # Replace with your desired Azure region
