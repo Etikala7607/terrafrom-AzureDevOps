@@ -9,33 +9,43 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    backendServiceArm: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
-    backendAzureRmResourceGroupName: 'my_resource'
-    backendAzureRmStorageAccountName: 'hghghghhghg' 
-    backendAzureRmContainerName: 'hghghghhghg1'
-    backendAzureRmKey: 'terraform.tfstate'
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    environmentServiceNameAzureRM: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    environmentServiceNameAzureRM: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
+stages:
+  - stage: tfvalidate
+    jobs: 
+      - job: validate
+        continueOnError: false
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+  - stage: tfdeploy
+    dependsOn: tfvalidate
+    jobs:
+      - job: apply
+        steps:    
+          - task: TerraformInstaller@1
+            displayName: tfinstall
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
