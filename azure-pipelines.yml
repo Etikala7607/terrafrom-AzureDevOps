@@ -23,6 +23,9 @@ steps:
     command: 'init'
     backendServiceArm: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
     backendAzureRmResourceGroupName: 'my_resource'
+     backendAzureRmStorageAccountName: 'hghghghhghg' 
+    backendAzureRmContainerName: 'hghghghhghg1'
+    backendAzureRmKey: 'terraform.tfstate'
 - task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
