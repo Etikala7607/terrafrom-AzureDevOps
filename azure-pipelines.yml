@@ -22,15 +22,11 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    backendServiceArm: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
-    backendAzureRmResourceGroupName: 'my_resource'
-    backendAzureRmStorageAccountName: 'ravan666'
-    backendAzureRmContainerName: 'terra-work'
-    backendAzureRmKey: 'terraform.tfstate'
+              backendServiceArm: 'Azure subscription 1(09596d8b-933e-4093-a627-78cef0237f46)'
+              backendAzureRmResourceGroupName: 'my_resource'
+              backendAzureRmStorageAccountName: 'ravan666'
+              backendAzureRmContainerName: 'terra-work'
+              backendAzureRmKey: 'terraform.tfstate'
           - task: TerraformTaskV4@4
             inputs:
               provider: 'azurerm'
